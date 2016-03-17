@@ -10,9 +10,12 @@ namespace CardGames
         {
             Bitmap cards;
             cards = SwinGame.LoadBitmapNamed ("Cards", "Cards.png");
-            SwinGame.BitmapSetCellDetails (cards, 167, 250, 13, 5, 53);      // set the cells in the bitmap to match the cards
-            SwinGame.LoadSoundEffectNamed ("Slap","slap.wav"); 				 // sound effects #1
-            //SwinGame.LoadSoundEffectNamed ("DoubleSnap", "double_snap.wav"); // sound effects #2
+            SwinGame.BitmapSetCellDetails (cards, 82, 110, 13, 5, 53);      // set the cells in the bitmap to match the cards
+
+            SoundEffect sound1;
+            SoundEffect sound2;
+            sound1 = SwinGame.LoadSoundEffectNamed ("Slap", "slap.wav");      // sound effect #1
+            sound2 = SwinGame.LoadSoundEffectNamed ("DoubleSnap", "double_snap.wav")      // sound effect #2
         }
 
 		/// <summary>
@@ -26,25 +29,26 @@ namespace CardGames
 
 			if (SwinGame.KeyTyped (KeyCode.vk_SPACE))
 			{
-                myGame.Start();
+				myGame.FlipNextCard ();
 			}
 
 			if (myGame.isStarted)
 			{
-				if (SwinGame.KeyTyped (KeyCode.vk_LSHIFT) &&
+				if (SwinGame.KeyTyped (KeyCode.vk_LSHIFT) ||
 					SwinGame.KeyTyped (KeyCode.vk_RSHIFT))
 				{
 					// TODO: add sound effects
-					SwinGame.PlaySoundEffect("Slap");
-
+					SwinGame.PlaySoundEffect (sound2);
 				}
 				else if (SwinGame.KeyTyped (KeyCode.vk_LSHIFT))
 				{
 					myGame.PlayerHit(0);
+					SwinGame.PlaySoundEffect (sound1);
 				}
 				else if (SwinGame.KeyTyped (KeyCode.vk_RSHIFT))
 				{
 					myGame.PlayerHit(1);
+					SwinGame.PlaySoundEffect (sound1);
 				}
 			}
 		}
@@ -55,7 +59,7 @@ namespace CardGames
 		/// <param name="myGame">The details of the game -- mostly top card and scores.</param>
 		private static void DrawGame(Snap myGame)
 		{
-            SwinGame.DrawBitmap("cardsBoard.png", 0, 0);
+			SwinGame.ClearScreen(Color.White);
 
 			// Draw the top card
 			Card top = myGame.TopCard;
@@ -64,7 +68,7 @@ namespace CardGames
 				SwinGame.DrawText ("Top Card is " + top.ToString (), Color.RoyalBlue, 0, 20);
 				SwinGame.DrawText ("Player 1 score: " + myGame.Score(0), Color.RoyalBlue, 0, 30);
 				SwinGame.DrawText ("Player 2 score: " + myGame.Score(1), Color.RoyalBlue, 0, 40);
-				SwinGame.DrawCell (SwinGame.BitmapNamed ("Cards"), top.CardIndex, 521, 153);
+				SwinGame.DrawCell (SwinGame.BitmapNamed ("Cards"), top.CardIndex, 350, 50);
 			}
 			else
 			{
@@ -72,7 +76,7 @@ namespace CardGames
 			}
 
 			// Draw the back of the cards... to represent the deck
-			SwinGame.DrawCell (SwinGame.BitmapNamed ("Cards"), 52, 155, 153);
+			SwinGame.DrawCell (SwinGame.BitmapNamed ("Cards"), 52, 160, 50);
 
 			//Draw onto the screen
 			SwinGame.RefreshScreen(60);
