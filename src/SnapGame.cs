@@ -68,6 +68,10 @@ namespace CardGames
 
         public static void Main()
         {
+            //Loads the new font
+            SwinGame.LoadFontNamed("GameFont", "Chunkfive.otf", 24);
+            SwinGame.DrawText("" + myGame.Score(0), Color.White, "GameFont", 0, 30);
+
             //Open the game window
             SwinGame.OpenGraphicsWindow("Snap!", 860, 500);
 
